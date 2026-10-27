@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+mlruns/
+mlartifacts/
+model.pkl
+feature_columns.pkl
+label_encoder.pkl
+scaler.pkl
+plots/
+*.egg-info/
+.DS_Store
+report.md

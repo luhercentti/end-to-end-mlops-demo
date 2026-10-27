@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Student Academic Risk Prediction</title>
+  <style>
+    body { font-family: -apple-system, Arial, sans-serif; max-width: 640px; margin: 40px auto; }
+    textarea { width: 100%; height: 180px; font-family: monospace; }
+    button { padding: 8px 16px; margin-top: 10px; cursor: pointer; }
+    #result { margin-top: 16px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Student Academic Risk Prediction</h1>
+  <p>Paste a JSON object with the student's feature values and click Predict.</p>
+  <textarea id="payload">{
+  "Marital status": 1,
+  "Application mode": 17,
+  "Application order": 5,
+  "Course": 171,
+  "Daytime/evening attendance": 1,
+  "Previous qualification": 1,
+  "Previous qualification (grade)": 122,
+  "Nacionality": 1,
+  "Mother's qualification": 19,
+  "Father's qualification": 12,
+  "Mother's occupation": 5,
+  "Father's occupation": 9,
+  "Admission grade": 127.3,
+  "Displaced": 1,
+  "Educational special needs": 0,
+  "Debtor": 0,
+  "Tuition fees up to date": 1,
+  "Gender": 1,
+  "Scholarship holder": 0,
+  "Age at enrollment": 20,
+  "International": 0
+}</textarea>
+  <br />
+  <button onclick="predict()">Predict</button>
+  <div id="result"></div>
+
+  <script>
+    async function predict() {
+      const resultEl = document.getElementById("result");
+      resultEl.textContent = "Predicting...";
+      try {
+        const body = JSON.parse(document.getElementById("payload").value);
+        const res = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const json = await res.json();
+        resultEl.textContent = res.ok
+          ? "Prediction: " + json.prediction
+          : "Error: " + json.detail;
+      } catch (e) {
+        resultEl.textContent = "Error: " + e.message;
+      }
+    }
+  </script>
+</body>
+</html>
